@@ -58,6 +58,9 @@
 		11E8ED66261E7A2E00FC06F1 /* CarlosFalconett_Weather */ = {
 			isa = PBXGroup;
 			children = (
+				11E8ED80261E7E1000FC06F1 /* controller */,
+				11E8ED7F261E7E0A00FC06F1 /* view */,
+				11E8ED7E261E7E0300FC06F1 /* model */,
 				11E8ED67261E7A2E00FC06F1 /* AppDelegate.swift */,
 				11E8ED69261E7A2E00FC06F1 /* SceneDelegate.swift */,
 				11E8ED6B261E7A2E00FC06F1 /* ViewController.swift */,
@@ -68,6 +71,27 @@
 				11E8ED70261E7A2E00FC06F1 /* CarlosFalconett_Weather.xcdatamodeld */,
 			);
 			path = CarlosFalconett_Weather;
+			sourceTree = "<group>";
+		};
+		11E8ED7E261E7E0300FC06F1 /* model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
+		11E8ED7F261E7E0A00FC06F1 /* view */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = view;
+			sourceTree = "<group>";
+		};
+		11E8ED80261E7E1000FC06F1 /* controller */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = controller;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
