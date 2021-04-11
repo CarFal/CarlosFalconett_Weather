@@ -87,6 +87,7 @@
 		11E8ED7F261E7E0A00FC06F1 /* view */ = {
 			isa = PBXGroup;
 			children = (
+				11E8ED6B261E7A2E00FC06F1 /* ViewController.swift */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -94,7 +95,6 @@
 		11E8ED80261E7E1000FC06F1 /* controller */ = {
 			isa = PBXGroup;
 			children = (
-				11E8ED6B261E7A2E00FC06F1 /* ViewController.swift */,
 				11E8ED832622538F00FC06F1 /* WeatherFetcher.swift */,
 			);
 			path = controller;

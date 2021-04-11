@@ -8,7 +8,7 @@
 import Foundation
 
 class WeatherFetcher : ObservableObject{
-    var apiURL = "https://api.weatherapi.com/v1/current.json?key=cefc5359f745422aa4b10453210804&q=SELECTED_CITY&aqi=no"
+    var apiURL = ""
     
     @Published var currentWeather = Weather();
     
@@ -22,17 +22,35 @@ class WeatherFetcher : ObservableObject{
         }
     }
     
-    func setApiUrl(){
-        
+    func setApiUrl(cityname: String){
+        self.apiURL = "https://api.weatherapi.com/v1/current.json?key=cefc5359f745422aa4b10453210804&q=\(cityname)&aqi=no"
     }
     
-    func fetchDataFromAPI(){
-        guard let api = URL(string : apiURL) else {
+    func fetchDataFromAPI(cityname: String){
+        guard let api = URL(string : "https://api.weatherapi.com/v1/current.json?key=cefc5359f745422aa4b10453210804&q=\(cityname)&aqi=no") else {
             return
         }
         URLSession.shared.dataTask(with: api){ (data: Data?, response: URLResponse?, error: Error?) in
             
-            if(let err = error){
+            if let err = error {
+                print(#function, "Couldn't fetch data", err)
+            } else {
+                DispatchQueue.global().async {
+                    do{
+                        if let jsonData = data{
+                            let decoder = JSONDecoder()
+                            let decodedList = try decoder.decode(Weather.self, from: jsonData)
+                            DispatchQueue.main.async {
+                                self.currentWeather = decodedList
+                            }
+                            
+                        }else{
+                            print(#function, "No JSON")
+                        }
+                    }catch let error{
+                        print(#function, error)
+                    }
+                }
                 
             }
             

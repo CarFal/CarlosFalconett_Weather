@@ -9,9 +9,8 @@ import UIKit
 import Combine
 
 class ViewController: UIViewController {
-    //Weather API Key: cefc5359f745422aa4b10453210804
     private let weatherfetcher = WeatherFetcher.getInstance()
-    //private var currentWeather: Weather = Weather()
+    private var currentWeather: Weather = Weather()
     private var canceallable: Set<AnyCancellable> = []
     @IBOutlet var pkCountry: UIPickerView!
     
@@ -30,23 +29,34 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.weatherfetcher.fetchDataFromAPI()
-        self.receiveChanges()
-        // Do any additional setup after loading the view.
+        self.pkCountry.delegate = self
+        self.pkCountry.dataSource = self
+        self.lblFeelslike.text = "0.0"
+        self.lblTemp.text = "0.0"
+        self.lblWindDir.text = "N/A"
+        self.lblWindSpeed.text = "0.0"
+        self.lblUV.text = "0.0"
     }
     
     private func receiveChanges(){
         self.weatherfetcher.$currentWeather.receive(on: RunLoop.main)
             .sink{(weather) in
-                print(#function, "Receiver weather: ", weather)
-                //self.currentWeather = weather
-                self.lblFeelslike.text = "\(weather.feelslike_c)"
-                self.lblTemp.text = "\(weather.temp_c)"
-                self.lblWindDir.text = "\(weather.winddir)"
-                self.lblWindSpeed.text = "\(weather.windspeed)"
-                self.lblUV.text = "\(weather.uv)"
+                print(#function, "Receiver weather: ", weather.winddir)
+                self.currentWeather = weather
             }
             .store(in: &canceallable)
+        self.lblFeelslike.text = "\(self.currentWeather.feelslike_c)"
+        self.lblTemp.text = "\(self.currentWeather.temp_c)"
+        self.lblWindDir.text = "\(self.currentWeather.winddir)"
+        self.lblWindSpeed.text = "\(self.currentWeather.windspeed)"
+        self.lblUV.text = "\(self.currentWeather.uv)"
+    }
+    
+    @IBAction func getWeather(){
+        //self.weatherfetcher.setApiUrl(cityname: citylist[city])
+        self.weatherfetcher.fetchDataFromAPI(cityname: citylist[city])
+        self.receiveChanges()
+        
     }
 
 

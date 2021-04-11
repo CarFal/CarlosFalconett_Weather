@@ -8,8 +8,8 @@
 import Foundation
 
 
-class Weather : Codable{
-    //var current: String //Array containig current temp_c
+struct Weather : Codable{
+    //var current: Current //Array containig current temp_c
     var temp_c : Float //temperature in celcious
     var feelslike_c : Float //feels like in celcious
     var winddir: String //wind direction
@@ -19,7 +19,7 @@ class Weather : Codable{
     init(){
         self.temp_c = 0.0
         self.feelslike_c = 0.0
-        self.winddir = ""
+        self.winddir = "default"
         self.windspeed = 0.0
         self.uv = 0.0
     }
@@ -33,13 +33,13 @@ class Weather : Codable{
         case temp_c = "temp_c"
     }
     
-    required init(from decoder: Decoder) throws{
+    init(from decoder: Decoder) throws{
         let responso = try decoder.container(keyedBy: CodingKeys.self)
-        let currentContainer = try responso.decodeIfPresent([Current].self, forKey: .current)
+        let currentContainer = try Current.init(from: decoder)
         
-        self.temp_c = currentContainer?.first?.temp_c ?? 0.0
+        self.temp_c = currentContainer.temp_c
         self.feelslike_c = try responso.decodeIfPresent(Float.self, forKey: .feelslike_c) ?? 0.0
-        self.winddir = try responso.decodeIfPresent(String.self, forKey: .winddir) ?? ""
+        self.winddir = try responso.decodeIfPresent(String.self, forKey: .winddir) ?? "Not working"
         self.windspeed = try responso.decodeIfPresent(Float.self, forKey: .windspeed) ?? 0.0
         self.uv = try responso.decodeIfPresent(Float.self, forKey: .uv) ?? 0.0
     }
@@ -50,14 +50,14 @@ class Weather : Codable{
     
 }
 
-class Current: Codable{
+struct Current: Codable{
     var temp_c : Float //temperature in celcious
     
     enum CodingKeys: String, CodingKey{
         case temp_c = "temp_c"
     }
     
-    required init(from decoder: Decoder) throws{
+    init(from decoder: Decoder) throws{
         let response = try decoder.container(keyedBy: CodingKeys.self)
         self.temp_c = try response.decodeIfPresent(Float.self, forKey: .temp_c) ?? 0.0
     }
