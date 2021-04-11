@@ -9,16 +9,16 @@ import Foundation
 
 
 struct Weather : Codable{
-    var current: Current //Array containig current temp_c
-    //var temp_c : Float //temperature in celcious
+    //var current: Current //Array containig current temp_c
+    var temp_c : Decimal //temperature in celcious
     var feelslike_c : Decimal //feels like in celcious
     var winddir: String //wind direction
     var windspeed: Decimal //wind speed
     var uv: Decimal //ultra violet rays
     
     init(){
-        //self.temp_c = 0.0
-        self.current = Current.init()
+        self.temp_c = 0.0
+        //self.current = Current.init()
         self.feelslike_c = 0.0
         self.winddir = "default"
         self.windspeed = 0.0
@@ -36,13 +36,14 @@ struct Weather : Codable{
     
     init(from decoder: Decoder) throws{
         let responso = try decoder.container(keyedBy: CodingKeys.self)
-        self.current = try Current.init(from: decoder)
+        let currentContainer = try responso.decodeIfPresent(Current.self, forKey: .current)
         
-        //self.temp_c = currentContainer.temp_c
-        self.feelslike_c = try responso.decodeIfPresent(Decimal.self, forKey: .feelslike_c) ?? 0.0
-        self.winddir = try responso.decodeIfPresent(String.self, forKey: .winddir) ?? "Not working"
-        self.windspeed = try responso.decodeIfPresent(Decimal.self, forKey: .windspeed) ?? 0.0
-        self.uv = try responso.decodeIfPresent(Decimal.self, forKey: .uv) ?? 0.0
+        self.temp_c = currentContainer?.temp_c ?? 0.0
+        self.feelslike_c = currentContainer?.feelslike_c ?? 0.0
+        self.winddir = currentContainer?.winddir ?? "Not found"
+        self.windspeed = currentContainer?.windspeed ?? 0.0
+        self.uv = currentContainer?.uv ?? 0.0
+        
     }
     
     func encode(to encoder: Encoder) throws {
@@ -53,18 +54,26 @@ struct Weather : Codable{
 
 struct Current: Codable{
     var temp_c : Decimal //temperature in celcious
+    var feelslike_c : Decimal //feels like in celcious
+    var winddir: String //wind direction
+    var windspeed: Decimal //wind speed
+    var uv: Decimal //ultra violet rays
     
     enum CodingKeys: String, CodingKey{
         case temp_c = "temp_c"
-    }
-    
-    init(){
-        self.temp_c = 0.0
+        case feelslike_c = "feelslike_c"
+        case winddir = "wind_dir"
+        case windspeed = "wind_kph"
+        case uv = "uv"
     }
     
     init(from decoder: Decoder) throws{
         let response = try decoder.container(keyedBy: CodingKeys.self)
         self.temp_c = try response.decodeIfPresent(Decimal.self, forKey: .temp_c) ?? 0.0
+        self.feelslike_c = try response.decode(Decimal.self, forKey: .feelslike_c)
+        self.windspeed = try response.decode(Decimal.self, forKey: .windspeed)
+        self.uv = try response.decode(Decimal.self, forKey: .uv)
+        self.winddir = try response.decode(String.self, forKey: .winddir)
     }
     
     func encode(to encoder: Encoder) throws {

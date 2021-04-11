@@ -41,10 +41,10 @@ class ViewController: UIViewController {
     private func receiveChanges(){
         self.weatherfetcher.$currentWeather.receive(on: RunLoop.main)
             .sink{(weather) in
-                print(#function, "Receiver weather: ", weather.current.temp_c)
+                print(#function, "Receiver weather: ", weather)
                 self.currentWeather = weather
-                self.lblFeelslike.text = "\(weather.current.temp_c)"
-                self.lblTemp.text = "\(weather.current.temp_c)"
+                self.lblFeelslike.text = "\(weather.feelslike_c)"
+                self.lblTemp.text = "\(weather.temp_c)"
                 self.lblWindDir.text = "\(weather.winddir)"
                 self.lblWindSpeed.text = "\(weather.windspeed)"
                 self.lblUV.text = "\(weather.uv)"

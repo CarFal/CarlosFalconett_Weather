@@ -23,7 +23,7 @@ class WeatherFetcher : ObservableObject{
     }
     
     func fetchDataFromAPI(cityname: String){
-        let userApi: String = "https://api.weatherapi.com/v1/current.json?key=cefc5359f745422aa4b10453210804=&q=\(cityname)&aqi=no"
+        let userApi: String = "https://api.weatherapi.com/v1/current.json?key=cefc5359f745422aa4b10453210804&q=\(cityname)&aqi=no"
         print(#function, userApi)
         guard let api = URL(string : userApi) else {
             return
