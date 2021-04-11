@@ -31,25 +31,26 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         self.pkCountry.delegate = self
         self.pkCountry.dataSource = self
-        self.lblFeelslike.text = "0.0"
+        /*self.lblFeelslike.text = "0.0"
         self.lblTemp.text = "0.0"
         self.lblWindDir.text = "N/A"
         self.lblWindSpeed.text = "0.0"
-        self.lblUV.text = "0.0"
+        self.lblUV.text = "0.0"*/
     }
     
     private func receiveChanges(){
         self.weatherfetcher.$currentWeather.receive(on: RunLoop.main)
             .sink{(weather) in
-                print(#function, "Receiver weather: ", weather.winddir)
+                print(#function, "Receiver weather: ", weather.current.temp_c)
                 self.currentWeather = weather
+                self.lblFeelslike.text = "\(weather.current.temp_c)"
+                self.lblTemp.text = "\(weather.current.temp_c)"
+                self.lblWindDir.text = "\(weather.winddir)"
+                self.lblWindSpeed.text = "\(weather.windspeed)"
+                self.lblUV.text = "\(weather.uv)"
             }
             .store(in: &canceallable)
-        self.lblFeelslike.text = "\(self.currentWeather.feelslike_c)"
-        self.lblTemp.text = "\(self.currentWeather.temp_c)"
-        self.lblWindDir.text = "\(self.currentWeather.winddir)"
-        self.lblWindSpeed.text = "\(self.currentWeather.windspeed)"
-        self.lblUV.text = "\(self.currentWeather.uv)"
+        
     }
     
     @IBAction func getWeather(){

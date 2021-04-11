@@ -22,12 +22,10 @@ class WeatherFetcher : ObservableObject{
         }
     }
     
-    func setApiUrl(cityname: String){
-        self.apiURL = "https://api.weatherapi.com/v1/current.json?key=cefc5359f745422aa4b10453210804&q=\(cityname)&aqi=no"
-    }
-    
     func fetchDataFromAPI(cityname: String){
-        guard let api = URL(string : "https://api.weatherapi.com/v1/current.json?key=cefc5359f745422aa4b10453210804&q=\(cityname)&aqi=no") else {
+        let userApi: String = "https://api.weatherapi.com/v1/current.json?key=cefc5359f745422aa4b10453210804=&q=\(cityname)&aqi=no"
+        print(#function, userApi)
+        guard let api = URL(string : userApi) else {
             return
         }
         URLSession.shared.dataTask(with: api){ (data: Data?, response: URLResponse?, error: Error?) in
@@ -41,6 +39,7 @@ class WeatherFetcher : ObservableObject{
                             let decoder = JSONDecoder()
                             let decodedList = try decoder.decode(Weather.self, from: jsonData)
                             DispatchQueue.main.async {
+                                print(#function,"Decoded Weather Data: \(decodedList)")
                                 self.currentWeather = decodedList
                             }
                             
